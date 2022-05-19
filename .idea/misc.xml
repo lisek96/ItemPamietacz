@@ -3,8 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.161" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.322" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/drawable/ic_choose_photo.xml" value="0.196" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/drawable/ic_launcher_background.xml" value="0.277" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/drawable/ic_take_photo.xml" value="0.304" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/layout/activity_main.xml" value="0.22486772486772486" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/layout/dd_notes_on_photo_fragment.xml" value="0.27239583333333334" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/layout/main_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/layout/paint_fragment.xml" value="0.35054347826086957" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/layout/take_photo_with_camerax_fragment.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/BRITENET/Desktop/AndroidProjects/ItemPamietacz/app/src/main/res/menu/bottom_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/main_fragment.xml" value="0.18541666666666667" />
       </map>
     </option>
   </component>
