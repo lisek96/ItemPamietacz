@@ -17,7 +17,7 @@ class PaintView (
     }
     private val blackPaint = Paint().apply{
         color=Color.BLACK
-        strokeWidth = 40f
+        strokeWidth = 15f
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
