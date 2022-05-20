@@ -1,4 +1,4 @@
-package rafalwojcik.prm.Service
+package rafalwojcik.prm.service
 
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture

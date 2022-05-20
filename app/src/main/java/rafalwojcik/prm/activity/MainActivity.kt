@@ -9,15 +9,15 @@ import rafalwojcik.prm.fragments.NotesOnPhotoFragment
 import rafalwojcik.prm.R
 import rafalwojcik.prm.fragments.TakePhotoWithCameraXFragment
 import rafalwojcik.prm.databinding.ActivityMainBinding
-import rafalwojcik.prm.databinding.PickPhotoFromGalleryFragmentBinding
-import rafalwojcik.prm.fragments.PickPhotoFromGalleryFragment
+import rafalwojcik.prm.fragments.GalleryFragment
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var notesOnPhotoFragment : NotesOnPhotoFragment = NotesOnPhotoFragment()
     private var takePhotoWithCameraXFragment : TakePhotoWithCameraXFragment = TakePhotoWithCameraXFragment()
-    private var pickPhotoFromGalleryFragment : PickPhotoFromGalleryFragment = PickPhotoFromGalleryFragment()
+    private var galleryFragment : GalleryFragment = GalleryFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -35,6 +35,13 @@ class MainActivity : AppCompatActivity() {
                         notesOnPhotoFragment.onCancelPressed()
                     }
         }
+        else {
+            superOnBackPressed()
+        }
+
+    }
+
+    fun superOnBackPressed(){
         super.onBackPressed()
     }
 
@@ -46,6 +53,14 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun goOpenGallery(){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(binding.fragmentContainer.id, galleryFragment, GalleryFragment().javaClass.name)
+            .addToBackStack(TakePhotoWithCameraXFragment().javaClass.name)
+            .commit()
+    }
+
     fun goTakeNoteOnPhoto(filePath: String){
         notesOnPhotoFragment.prepareBitMap(filePath)
         supportFragmentManager
@@ -53,17 +68,5 @@ class MainActivity : AppCompatActivity() {
             .replace(binding.fragmentContainer.id, notesOnPhotoFragment!!)
             .addToBackStack(NotesOnPhotoFragment().javaClass.name)
             .commit()
-    }
-
-    fun goPickPhotoFromGallery(){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(binding.fragmentContainer.id, pickPhotoFromGalleryFragment, PickPhotoFromGalleryFragment().javaClass.name)
-            .addToBackStack(PickPhotoFromGalleryFragment().javaClass.name)
-            .commit()
-    }
-
-    fun popBackstack(){
-        supportFragmentManager.popBackStack()
     }
 }

@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import rafalwojcik.prm.Service.CameraService
+import rafalwojcik.prm.service.CameraService
 import rafalwojcik.prm.activity.MainActivity
 import rafalwojcik.prm.databinding.TakePhotoWithCameraxFragmentBinding
+import kotlin.concurrent.thread
 
 class TakePhotoWithCameraXFragment : Fragment() {
     private lateinit var binding: TakePhotoWithCameraxFragmentBinding
@@ -34,14 +35,9 @@ class TakePhotoWithCameraXFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cameraService = CameraService(binding, parentActivity, this).startCamera()
-    }
-
-    private fun askForCameraPermission(){
-        ActivityCompat.requestPermissions(parentActivity,
-            arrayOf(Manifest.permission.CAMERA),
-            200
-        );
+        thread {
+            cameraService = CameraService(binding, parentActivity, this).startCamera()
+        }
     }
 
     fun goTakeNotesOnPhoto(filePath : String){

@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.room.Room
-import rafalwojcik.prm.Service.FileService
+import rafalwojcik.prm.service.FileService
 import rafalwojcik.prm.activity.MainActivity
 import rafalwojcik.prm.database.AppDatabase
+import rafalwojcik.prm.database.DatabaseGiver
 import rafalwojcik.prm.databinding.NotesOnPhotoFragmentBinding
 import rafalwojcik.prm.model.Product
+import java.io.File
 import kotlin.concurrent.thread
 
 class NotesOnPhotoFragment() : Fragment() {
     private lateinit var binding: NotesOnPhotoFragmentBinding
-    private lateinit var filePath : String
+    private  var filePath : String? = null
     private lateinit var bitMap : Bitmap
     private lateinit var parentActivity : MainActivity
 
@@ -27,7 +29,9 @@ class NotesOnPhotoFragment() : Fragment() {
     }
 
     fun onCancelPressed(){
-        parentActivity.onBackPressed()
+        File(filePath)?.delete()
+        filePath = null
+        parentActivity.superOnBackPressed()
     }
 
     override fun onCreateView(
@@ -47,12 +51,7 @@ class NotesOnPhotoFragment() : Fragment() {
     }
 
     fun addProduct(){
-        val db = Room.databaseBuilder(
-            parentActivity,
-            AppDatabase::class.java, "database-name"
-        ).build()
-
-        val productDao = db.productDao()
+        val productDao = DatabaseGiver.getDb(parentActivity).productDao()
        thread {
            productDao.insert(
                Product(

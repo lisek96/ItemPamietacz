@@ -1,4 +1,4 @@
-package rafalwojcik.prm.Service
+package rafalwojcik.prm.service
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder

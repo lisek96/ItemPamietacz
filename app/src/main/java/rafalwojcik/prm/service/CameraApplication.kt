@@ -1,4 +1,4 @@
-package rafalwojcik.prm.Service
+package rafalwojcik.prm.service
 
 import android.app.Application
 import android.util.Log

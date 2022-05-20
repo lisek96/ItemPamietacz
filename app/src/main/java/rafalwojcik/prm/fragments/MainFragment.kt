@@ -1,10 +1,12 @@
 package rafalwojcik.prm.fragments
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import rafalwojcik.prm.R
 import rafalwojcik.prm.activity.MainActivity
@@ -35,9 +37,28 @@ class MainFragment : Fragment() {
 
     fun actOnOptionSelected(item : MenuItem) : Boolean {
         when (item.itemId) {
-            R.id.load_photo -> parentActivity.goPickPhotoFromGallery()
-            R.id.take_photo -> parentActivity.goTakePhoto()
+            R.id.load_photo -> {
+                askForExternalStoragePermission()
+                parentActivity.goOpenGallery() }
+            R.id.take_photo -> {
+                askForCameraPermission()
+                parentActivity.goTakePhoto()
+            }
         }
         return true
+    }
+
+    private fun askForCameraPermission(){
+        ActivityCompat.requestPermissions(parentActivity,
+            arrayOf(Manifest.permission.CAMERA),
+            200
+        );
+    }
+
+    private fun askForExternalStoragePermission(){
+        ActivityCompat.requestPermissions(parentActivity,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            200
+        );
     }
 }
