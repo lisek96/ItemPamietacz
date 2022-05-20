@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 class Product(
-    @PrimaryKey val uid: Int,
     @ColumnInfo(name="filePath") val filePath: String,
     @ColumnInfo(name="productName") val productName: String,
     @ColumnInfo(name="latitude") val latitude: Double,
@@ -15,5 +14,7 @@ class Product(
     @ColumnInfo(name="street") val street: String,
     @ColumnInfo(name="streetNumber") val streetNumber: String
 ){
+    @PrimaryKey(autoGenerate = true)
+    var uid: Int = 0
 
 }

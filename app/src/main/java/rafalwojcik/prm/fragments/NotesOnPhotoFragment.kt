@@ -1,15 +1,18 @@
-package rafalwojcik.prm
+package rafalwojcik.prm.fragments
 
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.room.Room
 import rafalwojcik.prm.Service.FileService
+import rafalwojcik.prm.activity.MainActivity
+import rafalwojcik.prm.database.AppDatabase
 import rafalwojcik.prm.databinding.NotesOnPhotoFragmentBinding
-import java.io.File
+import rafalwojcik.prm.model.Product
+import kotlin.concurrent.thread
 
 class NotesOnPhotoFragment() : Fragment() {
     private lateinit var binding: NotesOnPhotoFragmentBinding
@@ -39,6 +42,27 @@ class NotesOnPhotoFragment() : Fragment() {
             binding = it
             binding.paintView.photo = bitMap
             binding.imageButtonCancelPhoto.setOnClickListener { onCancelPressed() }
+            binding.imageButtonAcceptPhoto.setOnClickListener {  addProduct()  }
         }.root
+    }
+
+    fun addProduct(){
+        val db = Room.databaseBuilder(
+            parentActivity,
+            AppDatabase::class.java, "database-name"
+        ).build()
+
+        val productDao = db.productDao()
+       thread {
+           productDao.insert(
+               Product(
+                   "xx", "xx", 34.0, 35.0,
+                   "xx", "xx", "xx"
+               )
+           )
+       }
+        thread{
+            println(productDao.getAll())
+        }
     }
 }

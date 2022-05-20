@@ -7,19 +7,17 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.coroutineScope
-import androidx.viewbinding.ViewBinding
 import com.google.common.util.concurrent.ListenableFuture
-import kotlinx.coroutines.launch
-import rafalwojcik.prm.MainActivity
-import rafalwojcik.prm.TakePhotoWithCameraXFragment
+import rafalwojcik.prm.activity.MainActivity
+import rafalwojcik.prm.fragments.TakePhotoWithCameraXFragment
 import rafalwojcik.prm.databinding.TakePhotoWithCameraxFragmentBinding
 import java.io.File
 import java.util.*
 
 class CameraService(_binding : TakePhotoWithCameraxFragmentBinding,
                     _parentActivity : MainActivity,
-                    _parentFragment : TakePhotoWithCameraXFragment) {
+                    _parentFragment : TakePhotoWithCameraXFragment
+) {
 
     private var binding = _binding
     private var parentActivity = _parentActivity

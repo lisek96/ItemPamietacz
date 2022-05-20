@@ -2,7 +2,6 @@ package rafalwojcik.prm.Service
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import rafalwojcik.prm.NotesOnPhotoFragment
 import java.io.File
 
 class FileService {
