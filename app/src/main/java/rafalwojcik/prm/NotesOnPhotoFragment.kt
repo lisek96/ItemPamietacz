@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import rafalwojcik.prm.Service.FileService
 import rafalwojcik.prm.databinding.NotesOnPhotoFragmentBinding
 import java.io.File
 
@@ -14,23 +15,16 @@ class NotesOnPhotoFragment() : Fragment() {
     private lateinit var binding: NotesOnPhotoFragmentBinding
     private lateinit var filePath : String
     private lateinit var bitMap : Bitmap
-    private val mainActivity = requireActivity() as MainActivity
-
-    constructor(_filePath : String) : this() {
-        filePath = _filePath
-        prepareBitMap(filePath)
-        println("BUILDING")
-    }
+    private lateinit var parentActivity : MainActivity
 
     fun prepareBitMap(filePath: String): NotesOnPhotoFragment {
         this.filePath = filePath
-        var source = ImageDecoder.createSource(File(filePath))
-        bitMap = ImageDecoder.decodeBitmap(source)
+        bitMap = FileService.getBitmapFromFile(filePath)
         return this
     }
 
     fun onCancelPressed(){
-        mainActivity.onBackPressed()
+        parentActivity.onBackPressed()
     }
 
     override fun onCreateView(
@@ -38,6 +32,7 @@ class NotesOnPhotoFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        parentActivity = requireActivity() as MainActivity
         return NotesOnPhotoFragmentBinding.inflate(
             inflater, container, false
         ).also {

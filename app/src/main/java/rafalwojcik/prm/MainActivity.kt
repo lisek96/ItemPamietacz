@@ -8,11 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import rafalwojcik.prm.databinding.ActivityMainBinding
 
-import java.io.File
-import java.util.*
-import java.util.concurrent.Executors
-
-
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
