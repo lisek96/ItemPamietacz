@@ -15,4 +15,8 @@ class Product(
     var uid: Int = 0
     @ColumnInfo(name="createdDate")
     var createdDate: String = LocalDate.now().toString()
+    @ColumnInfo(name="createdDate")
+    var latitude: Double = 0.0
+    @ColumnInfo(name="createdDate")
+    var longitude: Double = 0.0
 }

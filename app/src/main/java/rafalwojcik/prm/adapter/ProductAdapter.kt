@@ -30,7 +30,6 @@ class ProductAdapter(private var context: Context) : RecyclerView.Adapter<Produc
             binding.productCreatedDate.text = product.createdDate
             binding.productName.text = product.productName
             binding.productLogo.setImageBitmap(FileService.getBitmapFromFile(File(product.filePath)))
-
         }
     }
 
