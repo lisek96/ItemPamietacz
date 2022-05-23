@@ -14,12 +14,14 @@ import rafalwojcik.prm.R
 import rafalwojcik.prm.activity.MainActivity
 import rafalwojcik.prm.adapter.ProductAdapter
 import rafalwojcik.prm.databinding.MainFragmentBinding
+import rafalwojcik.prm.model.Product
 import kotlin.concurrent.thread
 
 class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
     private lateinit var parentActivity : MainActivity
     private lateinit var productAdapter : ProductAdapter
+    private var adapterInitialized : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +30,10 @@ class MainFragment : Fragment() {
     ): View {
         parentActivity = activity as MainActivity
         thread{
-            productAdapter = ProductAdapter(parentActivity)
+            if(!adapterInitialized) {
+                productAdapter = ProductAdapter(parentActivity)
+                adapterInitialized = true
+            }
         }
         return MainFragmentBinding.inflate(
             inflater, container, false
@@ -71,5 +76,9 @@ class MainFragment : Fragment() {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             200
         );
+    }
+
+    fun addProduct(product: Product){
+        productAdapter.add(product)
     }
 }

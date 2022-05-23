@@ -37,7 +37,10 @@ class CreateProductFragment : Fragment() {
         ).apply {
             binding = this
             binding.logo.setImageBitmap(FileService.getBitmapFromFile(File(filePath)))
-            binding.add.setOnClickListener {  addProduct() }
+            binding.add.setOnClickListener{
+                addProduct()
+                parentActivity.goMainFragment()
+            }
         }.root
     }
 
@@ -47,17 +50,8 @@ class CreateProductFragment : Fragment() {
     }
 
     fun addProduct(){
-        val productDao = DatabaseGiver.getDb(parentActivity).productDao()
-        thread {
-            productDao.insert(
-                Product(
-                    filePath!!, binding.name.text.toString(), binding.address.text.toString()
-                )
-            )
-        }
-        thread{
-            println(productDao.getAll())
-        }
+        var product = Product(filePath!!, binding.name.text.toString(), binding.address.text.toString())
+        parentActivity.addProduct(product)
     }
 
 }

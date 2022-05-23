@@ -16,10 +16,10 @@ import kotlin.concurrent.thread
 
 class ProductAdapter(private var context: Context) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
 
-    private var products : List<Product> = mutableListOf()
+    private var products : MutableList<Product> = mutableListOf()
 
     init {
-        products = DatabaseGiver.getDb(context).productDao().getAll()
+        products = DatabaseGiver.getDb(context).productDao().getAll().toMutableList()
     }
 
     class ProductViewHolder(
@@ -47,5 +47,14 @@ class ProductAdapter(private var context: Context) : RecyclerView.Adapter<Produc
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) =  holder.bind(products[position])
 
     override fun getItemCount(): Int = products.size
+
+    fun add(product: Product){
+        products.add(product)
+        this.notifyItemInserted(products.indexOf(product))
+        thread {
+            val productDao = DatabaseGiver.getDb(context).productDao()
+            productDao.insert(product)
+        }
+    }
 
 }

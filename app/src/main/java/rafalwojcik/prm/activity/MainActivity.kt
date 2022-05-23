@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import rafalwojcik.prm.R
 import rafalwojcik.prm.databinding.ActivityMainBinding
 import rafalwojcik.prm.fragments.*
+import rafalwojcik.prm.model.Product
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -15,15 +16,13 @@ class MainActivity : AppCompatActivity() {
     private var notesOnPhotoFragment : NotesOnPhotoFragment = NotesOnPhotoFragment()
     private var takePhotoWithCameraXFragment : TakePhotoWithCameraXFragment = TakePhotoWithCameraXFragment()
     private var createProductFragment : CreateProductFragment = CreateProductFragment()
+    private var mainFragment : MainFragment = MainFragment()
     private var galleryFragment : GalleryFragment = GalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragmentContainer, MainFragment(), MainFragment().javaClass.name)
-            .commit()
+        goMainFragment()
     }
 
     override fun onBackPressed() {
@@ -41,6 +40,13 @@ class MainActivity : AppCompatActivity() {
 
     fun superOnBackPressed(){
         super.onBackPressed()
+    }
+
+    fun goMainFragment(){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, mainFragment, MainFragment().javaClass.name)
+            .commit()
     }
 
     fun goTakePhoto(){
@@ -83,5 +89,9 @@ class MainActivity : AppCompatActivity() {
             .replace(binding.fragmentContainer.id, createProductFragment.setFilePath((filePath)), createProductFragment.javaClass.name)
             .addToBackStack(NotesOnPhotoFragment().javaClass.name)
             .commit()
+    }
+
+    fun addProduct(product: Product){
+        mainFragment.addProduct(product)
     }
 }
