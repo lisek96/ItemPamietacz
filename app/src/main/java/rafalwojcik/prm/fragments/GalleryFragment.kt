@@ -13,12 +13,13 @@ import rafalwojcik.prm.activity.MainActivity
 import rafalwojcik.prm.adapter.GalleryAdapter
 import rafalwojcik.prm.databinding.GalleryBinding
 import rafalwojcik.prm.databinding.MainFragmentBinding
+import java.io.File
 
 class GalleryFragment : Fragment() {
     private lateinit var binding: GalleryBinding
     private lateinit var parentActivity : MainActivity
     private val galleryAdapter by lazy {
-        GalleryAdapter(parentActivity)
+        GalleryAdapter(this::goTakeNotes, parentActivity)
     }
 
     override fun onCreateView(
@@ -41,5 +42,9 @@ class GalleryFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this.context, 2)
         }
+    }
+
+    private fun goTakeNotes(file: File){
+        parentActivity.goTakeNoteOnPhoto(file)
     }
 }

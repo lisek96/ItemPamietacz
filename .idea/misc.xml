@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.3635" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_add_a_photo_48.xml" value="0.2925" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.1355" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.2925" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_check_48.xml" value="0.256" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_baseline_close_48.xml" value="0.2925" />
@@ -13,11 +14,14 @@
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/ic_take_photo.xml" value="0.2925" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/drawable/xx.xml" value="0.3635" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/create_new_product.xml" value="0.1" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/create_product.xml" value="0.25" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/gallery.xml" value="0.1802536231884058" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/gallery_item.xml" value="0.25" />
-        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/main_fragment.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/main_fragment.xml" value="0.33" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/notes_on_photo_fragment.xml" value="0.1762917933130699" />
-        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/product_item.xml" value="0.13240740740740742" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/pick_photo_from_gallery_fragment.xml" value="0.13240740740740742" />
+        <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/product_item.xml" value="0.25" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/layout/take_photo_with_camerax_fragment.xml" value="0.30480072463768115" />
         <entry key="..\:/Users/Rafal/AndroidStudioProjects/PRM2/app/src/main/res/menu/bottom_menu.xml" value="0.13240740740740742" />
       </map>

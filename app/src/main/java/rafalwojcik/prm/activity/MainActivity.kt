@@ -4,18 +4,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.launch
-import rafalwojcik.prm.fragments.MainFragment
-import rafalwojcik.prm.fragments.NotesOnPhotoFragment
 import rafalwojcik.prm.R
-import rafalwojcik.prm.fragments.TakePhotoWithCameraXFragment
 import rafalwojcik.prm.databinding.ActivityMainBinding
-import rafalwojcik.prm.fragments.GalleryFragment
+import rafalwojcik.prm.fragments.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var notesOnPhotoFragment : NotesOnPhotoFragment = NotesOnPhotoFragment()
     private var takePhotoWithCameraXFragment : TakePhotoWithCameraXFragment = TakePhotoWithCameraXFragment()
+    private var createProductFragment : CreateProductFragment = CreateProductFragment()
     private var galleryFragment : GalleryFragment = GalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragmentContainer, MainFragment(), MainFragment().javaClass.name)
-            .addToBackStack(MainFragment().javaClass.name)
             .commit()
     }
 
@@ -63,9 +61,26 @@ class MainActivity : AppCompatActivity() {
 
     fun goTakeNoteOnPhoto(filePath: String){
         notesOnPhotoFragment.prepareBitMap(filePath)
+        goTakeNoteOnPhoto()
+    }
+
+    fun goTakeNoteOnPhoto(file: File){
+        notesOnPhotoFragment.prepareBitMap(file)
+        goTakeNoteOnPhoto()
+    }
+
+    private fun goTakeNoteOnPhoto(){
         supportFragmentManager
             .beginTransaction()
             .replace(binding.fragmentContainer.id, notesOnPhotoFragment!!)
+            .addToBackStack(NotesOnPhotoFragment().javaClass.name)
+            .commit()
+    }
+
+    fun goCreateProductFragment(filePath: String){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(binding.fragmentContainer.id, createProductFragment.setFilePath((filePath)), createProductFragment.javaClass.name)
             .addToBackStack(NotesOnPhotoFragment().javaClass.name)
             .commit()
     }

@@ -1,5 +1,7 @@
 package rafalwojcik.prm.dao
 
+import android.database.Cursor
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert

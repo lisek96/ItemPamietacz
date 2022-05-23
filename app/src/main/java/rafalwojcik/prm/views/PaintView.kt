@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.bumptech.glide.Glide
 
 class PaintView (
     context: Context,
@@ -15,6 +16,7 @@ class PaintView (
     private val whitePaint = Paint().apply{
         color = Color.WHITE
     }
+
     private val blackPaint = Paint().apply{
         color=Color.BLACK
         strokeWidth = 15f
@@ -24,7 +26,7 @@ class PaintView (
     }
 
     override fun onDraw(canvas: Canvas) {
-        drawCanvas(canvas);
+        drawPhoto(canvas);
         drawPaths(canvas)
     }
 
@@ -52,20 +54,19 @@ class PaintView (
         return true
     }
 
-    private fun drawCanvas(canvas: Canvas) {
-        val dst = Rect(0, 0, width, height)
-        val photo = this.photo;
-        if (photo != null) {
-            canvas.drawBitmap(photo, null, dst, null);
-        }else{
-            canvas.drawRect(dst, whitePaint)
+    private fun drawPhoto(canvas: Canvas) {
+        val rect = Rect(0, 0, width, height)
+        photo?.copy(Bitmap.Config.ARGB_8888, false)?.let {
+            canvas.drawBitmap(it, null, rect, null)
+        } ?: let {
+            canvas.drawRect(rect, whitePaint)
         }
     }
 
     fun getBitmap(): Bitmap {
-        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888, false)
         Canvas(bmp).let {
-            drawCanvas(it)
+            drawPhoto(it)
             drawPaths(it)
         }
         return bmp

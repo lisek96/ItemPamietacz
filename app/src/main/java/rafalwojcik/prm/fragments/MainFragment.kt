@@ -8,13 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import rafalwojcik.prm.R
 import rafalwojcik.prm.activity.MainActivity
+import rafalwojcik.prm.adapter.ProductAdapter
 import rafalwojcik.prm.databinding.MainFragmentBinding
+import kotlin.concurrent.thread
 
 class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
     private lateinit var parentActivity : MainActivity
+    private lateinit var productAdapter : ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +27,9 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         parentActivity = activity as MainActivity
+        thread{
+            productAdapter = ProductAdapter(parentActivity)
+        }
         return MainFragmentBinding.inflate(
             inflater, container, false
         ).apply {
@@ -32,7 +40,10 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.recyclerViewProduct.apply {
+            adapter = productAdapter
+            layoutManager = LinearLayoutManager(parentActivity)
+        }
     }
 
     fun actOnOptionSelected(item : MenuItem) : Boolean {

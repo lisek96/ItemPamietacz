@@ -58,7 +58,7 @@ class CameraService(_binding : TakePhotoWithCameraxFragmentBinding,
     }
 
     fun onImageCapture(){
-        var currentFilePath = """${parentActivity.filesDir}${UUID.randomUUID()}.jpg"""
+        var currentFilePath = FileService.getPath(parentActivity)
         val outputFileOptions =
             ImageCapture.OutputFileOptions.Builder(
                 File(currentFilePath)
