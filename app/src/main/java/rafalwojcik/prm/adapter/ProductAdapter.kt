@@ -2,6 +2,7 @@ package rafalwojcik.prm.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
@@ -14,7 +15,9 @@ import rafalwojcik.prm.service.FileService
 import java.io.File
 import kotlin.concurrent.thread
 
-class ProductAdapter(private var context: Context) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
+class ProductAdapter(
+    private var onProductClick: (Product)->Unit,
+    private var context: Context) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
 
     private var products : MutableList<Product> = mutableListOf()
 
@@ -38,7 +41,19 @@ class ProductAdapter(private var context: Context) : RecyclerView.Adapter<Produc
         val productItemBinding = ProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(productItemBinding).apply {
             productItemBinding.root.setOnClickListener {
-
+                var product = products[this.adapterPosition]
+                onProductClick(product)
+            }
+            productItemBinding.root.setOnLongClickListener {
+                var product = products[this.adapterPosition]
+                products.remove(product)
+                notifyItemRemoved(this.adapterPosition)
+                Toast.makeText(context, "Product deleted!",
+                    Toast.LENGTH_SHORT).show();
+                thread{
+                    DatabaseGiver.getDb(context).productDao().delete(product)
+                }
+                true
             }
         }
     }

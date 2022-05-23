@@ -9,14 +9,14 @@ import java.time.LocalDate
 class Product(
     @ColumnInfo(name="filePath") val filePath: String,
     @ColumnInfo(name="productName") val productName: String,
-    @ColumnInfo(name="productAddress") val productAddress: String,
+    @ColumnInfo(name="productAddress") var productAddress: String,
 ){
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0
     @ColumnInfo(name="createdDate")
     var createdDate: String = LocalDate.now().toString()
-    @ColumnInfo(name="createdDate")
+    @ColumnInfo(name="latitude")
     var latitude: Double = 0.0
-    @ColumnInfo(name="createdDate")
+    @ColumnInfo(name="longitude")
     var longitude: Double = 0.0
 }

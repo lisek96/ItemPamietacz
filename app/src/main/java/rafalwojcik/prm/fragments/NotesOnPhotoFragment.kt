@@ -52,7 +52,7 @@ class NotesOnPhotoFragment() : Fragment() {
             binding.imageButtonCancelPhoto.setOnClickListener { onCancelPressed() }
             binding.imageButtonAcceptPhoto.setOnClickListener {
                 replaceOriginalPhotoWithPhotoWithNotes()
-                parentActivity.goCreateProductFragment(filePath!!)
+                parentActivity.goCreateProductFragment(Product(filePath, "Name", "Address"))
             }
         }.root
     }

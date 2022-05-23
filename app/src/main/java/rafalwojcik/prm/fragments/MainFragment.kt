@@ -31,7 +31,7 @@ class MainFragment : Fragment() {
         parentActivity = activity as MainActivity
         thread{
             if(!adapterInitialized) {
-                productAdapter = ProductAdapter(parentActivity)
+                productAdapter = ProductAdapter(::goDetails, parentActivity)
                 adapterInitialized = true
             }
         }
@@ -76,6 +76,10 @@ class MainFragment : Fragment() {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             200
         );
+    }
+
+    fun goDetails(product: Product){
+        parentActivity.goDetails(product)
     }
 
     fun addProduct(product: Product){

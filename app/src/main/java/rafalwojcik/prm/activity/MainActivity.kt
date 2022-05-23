@@ -1,7 +1,7 @@
 package rafalwojcik.prm.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.launch
 import rafalwojcik.prm.R
@@ -10,19 +10,37 @@ import rafalwojcik.prm.fragments.*
 import rafalwojcik.prm.model.Product
 import java.io.File
 
+
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private var notesOnPhotoFragment : NotesOnPhotoFragment = NotesOnPhotoFragment()
-    private var takePhotoWithCameraXFragment : TakePhotoWithCameraXFragment = TakePhotoWithCameraXFragment()
-    private var createProductFragment : CreateProductFragment = CreateProductFragment()
-    private var mainFragment : MainFragment = MainFragment()
-    private var galleryFragment : GalleryFragment = GalleryFragment()
+    private var notesOnPhotoFragment = NotesOnPhotoFragment()
+    private var takePhotoWithCameraXFragment  = TakePhotoWithCameraXFragment()
+    private var createProductFragment  : CreateProductFragment? = null
+    private var mainFragment  = MainFragment()
+    private var galleryFragment  = GalleryFragment()
+    private var productDetailFragment = ProductDetailFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        Intent(this, LocationService::class.java).also { intent ->
+//            startForegroundService(intent)
+//        }
         setContentView(binding.root)
-        goMainFragment()
+
+    goMainFragment()
+    }
+
+
+    fun goMapFragment(product: Product, mode: PickPlaceFragment.Mode) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragmentContainer,
+                PickPlaceFragment().setProduct(product).setMode(mode),
+                PickPlaceFragment().javaClass.name
+            )
+            .commit()
     }
 
     override fun onBackPressed() {
@@ -53,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(binding.fragmentContainer.id, takePhotoWithCameraXFragment, TakePhotoWithCameraXFragment().javaClass.name)
-            .addToBackStack(TakePhotoWithCameraXFragment().javaClass.name)
+            .addToBackStack(takePhotoWithCameraXFragment.javaClass.name)
             .commit()
     }
 
@@ -61,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(binding.fragmentContainer.id, galleryFragment, GalleryFragment().javaClass.name)
-            .addToBackStack(TakePhotoWithCameraXFragment().javaClass.name)
+            .addToBackStack(galleryFragment.javaClass.name)
             .commit()
     }
 
@@ -79,19 +97,32 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(binding.fragmentContainer.id, notesOnPhotoFragment!!)
-            .addToBackStack(NotesOnPhotoFragment().javaClass.name)
+            .addToBackStack(notesOnPhotoFragment.javaClass.name)
             .commit()
     }
 
-    fun goCreateProductFragment(filePath: String){
+    fun goCreateProductFragment(newProduct: Product){
+        if(createProductFragment == null){
+            createProductFragment = CreateProductFragment().setProduct(newProduct)
+        }
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainer.id, createProductFragment.setFilePath((filePath)), createProductFragment.javaClass.name)
-            .addToBackStack(NotesOnPhotoFragment().javaClass.name)
+            .replace(binding.fragmentContainer.id, createProductFragment!!
+                .setProduct(newProduct), createProductFragment!!.javaClass.name)
+            .addToBackStack(createProductFragment!!.javaClass.name)
+            .commit()
+    }
+
+    fun goDetails(product: Product){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(binding.fragmentContainer.id, productDetailFragment.setProduct(product), productDetailFragment.javaClass.name)
+            .addToBackStack(productDetailFragment.javaClass.name)
             .commit()
     }
 
     fun addProduct(product: Product){
         mainFragment.addProduct(product)
     }
+
 }
