@@ -1,18 +1,26 @@
 package rafalwojcik.prm.androidService
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.common.internal.Constants
+import com.google.android.gms.location.*
 import rafalwojcik.prm.R
 import rafalwojcik.prm.activity.MainActivity
+import rafalwojcik.prm.dao.ProductDao
+import rafalwojcik.prm.database.DatabaseGiver
+import java.net.URI.create
 import kotlin.concurrent.thread
+import kotlin.math.log
 
 class LocationService : Service() {
 
 
+    @SuppressLint("MissingPermission")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         registerChannel()
         val notification = NotificationCompat.Builder(this, "5")
@@ -31,10 +39,43 @@ class LocationService : Service() {
 
         startForeground(1, notification)
 
+
         thread {
-            while(true){
-                println("LOL")
+            val productDao = DatabaseGiver.getDb(this).productDao()
+            val products = productDao.getAll()
+
+            products.forEach { product ->
+                val geofencs = mutableListOf(
+                    Geofence.Builder().setCircularRegion(
+                        product.latitude, product.longitude, 100f
+                    )
+                        .setRequestId("TEST")
+                        .setExpirationDuration(3600)
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                        .build()
+                )
+
+                GeofencingRequest.Builder().apply {
+                    setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                    addGeofences(geofencs)
+                }.build()
             }
+        }
+
+
+
+        thread {
+            var locClient = LocationServices.getFusedLocationProviderClient(this)
+            var locReq = LocationRequest.create()
+                .setExpirationDuration(10000)
+                .setInterval(10000)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            var locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    println(locationResult?.lastLocation)
+                }
+            }
+            locClient.requestLocationUpdates(locReq, locationCallback, Looper.getMainLooper())
         }
         return START_NOT_STICKY
     }

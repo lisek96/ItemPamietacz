@@ -8,7 +8,7 @@ import java.time.LocalDate
 @Entity
 class Product(
     @ColumnInfo(name="filePath") val filePath: String,
-    @ColumnInfo(name="productName") val productName: String,
+    @ColumnInfo(name="productName") var productName: String,
     @ColumnInfo(name="productAddress") var productAddress: String,
 ){
     @PrimaryKey(autoGenerate = true)

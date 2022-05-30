@@ -2,9 +2,11 @@ package rafalwojcik.prm.fragments
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import rafalwojcik.prm.activity.MainActivity
 import rafalwojcik.prm.database.DatabaseGiver
@@ -37,8 +39,14 @@ class ProductDetailFragment : Fragment(){
             binding = this
             binding.detailAddress.text = product.productAddress
             binding.detailCreateDate.text = product.createdDate
-            binding.detailName.text = product.productName
+            binding.detailName.text = Editable.Factory.getInstance().newEditable(product.productName)
             binding.logo.setImageBitmap(FileService.getBitmapFromFile(File(product.filePath)))
+            binding.buttonUpdate.setOnClickListener {
+                updateProduct()
+                parentActivity.goMainFragment()
+                Toast.makeText(context, "Product updated!",
+                    Toast.LENGTH_SHORT).show();
+            }
         }.root
     }
 
@@ -47,5 +55,11 @@ class ProductDetailFragment : Fragment(){
         binding.detailChooseAddress.setOnClickListener {
             parentActivity.goMapFragment(product, PickPlaceFragment.Mode.EDIT)
         }
+    }
+
+    private fun updateProduct(){
+        product.productAddress = binding.detailAddress.text.toString()
+        product.productName = binding.detailName.text.toString()
+        parentActivity.updateProduct(product)
     }
 }

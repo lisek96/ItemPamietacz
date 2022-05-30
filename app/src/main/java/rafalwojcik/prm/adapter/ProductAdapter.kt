@@ -45,14 +45,8 @@ class ProductAdapter(
                 onProductClick(product)
             }
             productItemBinding.root.setOnLongClickListener {
-                var product = products[this.adapterPosition]
-                products.remove(product)
-                notifyItemRemoved(this.adapterPosition)
-                Toast.makeText(context, "Product deleted!",
-                    Toast.LENGTH_SHORT).show();
-                thread{
-                    DatabaseGiver.getDb(context).productDao().delete(product)
-                }
+                val product = products[this.adapterPosition]
+                delete(product)
                 true
             }
         }
@@ -68,6 +62,24 @@ class ProductAdapter(
         thread {
             val productDao = DatabaseGiver.getDb(context).productDao()
             productDao.insert(product)
+        }
+    }
+
+    fun update(product: Product){
+        this.notifyItemChanged(products.indexOf(product))
+        thread{
+            val productDao = DatabaseGiver.getDb(context).productDao()
+            productDao.update(product)
+        }
+    }
+
+    private fun delete(product: Product){
+        notifyItemRemoved(products.indexOf(product))
+        products.remove(product)
+        Toast.makeText(context, "Product deleted!",
+            Toast.LENGTH_SHORT).show();
+        thread{
+            DatabaseGiver.getDb(context).productDao().delete(product)
         }
     }
 

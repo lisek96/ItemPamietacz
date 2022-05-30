@@ -85,4 +85,8 @@ class MainFragment : Fragment() {
     fun addProduct(product: Product){
         productAdapter.add(product)
     }
+
+    fun updateProduct(product: Product){
+        productAdapter.update(product)
+    }
 }

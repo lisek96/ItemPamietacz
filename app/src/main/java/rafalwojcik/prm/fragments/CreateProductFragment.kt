@@ -1,18 +1,23 @@
 package rafalwojcik.prm.fragments
 
+import android.Manifest
+import android.app.Activity
+import android.location.Location
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.maps.model.LatLng
 import rafalwojcik.prm.activity.MainActivity
-import rafalwojcik.prm.database.DatabaseGiver
 import rafalwojcik.prm.databinding.CreateProductBinding
-import rafalwojcik.prm.databinding.GalleryBinding
 import rafalwojcik.prm.model.Product
 import rafalwojcik.prm.service.FileService
+import rafalwojcik.prm.service.GeolocationService
+import rafalwojcik.prm.service.LocationService2
 import java.io.File
 import kotlin.concurrent.thread
 
@@ -37,6 +42,9 @@ class CreateProductFragment : Fragment() {
             inflater, container, false
         ).apply {
             binding = this
+            if(product.latitude == 0.0 || product.longitude == 0.0){
+                provideLocation()
+            }
         }.root
     }
 
@@ -53,11 +61,35 @@ class CreateProductFragment : Fragment() {
             parentActivity.goMapFragment(product, PickPlaceFragment.Mode.NEW)
         }
         binding.address.text = product.productAddress
+        binding.name.text = Editable.Factory.getInstance().newEditable(product.productName)
     }
 
     fun addProduct(){
-        var product = Product(product.filePath, binding.name.text.toString(), binding.address.text.toString())
+        var product = Product(product.filePath, binding.name.text.toString(), binding.address.text.toString()).apply {
+            longitude = product.longitude
+            latitude = product.latitude
+        }
         parentActivity.addProduct(product)
     }
 
+    private fun provideLocation(){
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION),
+            202)
+
+        LocationService2(::myLocationCallback).getLocation(context as Activity)
+    }
+
+    private fun myLocationCallback(location : Location){
+        println("""Location $location""")
+        product.longitude = location.longitude
+        product.latitude = location.latitude
+        thread {
+            binding.address.text = GeolocationService()
+                .getAddressFromPosition(requireContext(), LatLng(product.latitude, product.longitude))
+        }
+    }
 }

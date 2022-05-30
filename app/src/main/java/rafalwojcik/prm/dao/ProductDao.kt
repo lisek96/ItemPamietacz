@@ -2,10 +2,7 @@ package rafalwojcik.prm.dao
 
 import android.database.Cursor
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import rafalwojcik.prm.model.Product
 
 @Dao
@@ -16,6 +13,9 @@ interface ProductDao {
 
     @Insert
     fun insert(product: Product)
+
+    @Update
+    fun update(product: Product)
 
     @Delete
     fun delete(product: Product)

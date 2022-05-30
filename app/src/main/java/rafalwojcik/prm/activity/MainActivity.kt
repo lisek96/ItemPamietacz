@@ -1,13 +1,19 @@
 package rafalwojcik.prm.activity
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.launch
 import rafalwojcik.prm.R
+import rafalwojcik.prm.androidService.LocationService
 import rafalwojcik.prm.databinding.ActivityMainBinding
 import rafalwojcik.prm.fragments.*
 import rafalwojcik.prm.model.Product
+import rafalwojcik.prm.service.LocationService2
 import java.io.File
 
 
@@ -19,16 +25,30 @@ class MainActivity : AppCompatActivity() {
     private var createProductFragment  : CreateProductFragment? = null
     private var mainFragment  = MainFragment()
     private var galleryFragment  = GalleryFragment()
+    private var pickPlaceFragment = PickPlaceFragment()
     private var productDetailFragment = ProductDetailFragment()
+
+    private var locationRequestCode = 202
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Intent(this, LocationService::class.java).also { intent ->
-//            startForegroundService(intent)
-//        }
         setContentView(binding.root)
+        goMainFragment()
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED){
 
-    goMainFragment()
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION),
+                locationRequestCode)
+        }else{
+            println("OK, starting foreground service")
+            Intent(this, LocationService::class.java).also { intent ->
+                startForegroundService(intent)
+            }
+        }
     }
 
 
@@ -37,9 +57,10 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(
                 R.id.fragmentContainer,
-                PickPlaceFragment().setProduct(product).setMode(mode),
-                PickPlaceFragment().javaClass.name
+                pickPlaceFragment.setProduct(product).setMode(mode),
+                pickPlaceFragment.javaClass.name
             )
+            .addToBackStack(pickPlaceFragment.javaClass.name)
             .commit()
     }
 
@@ -63,14 +84,14 @@ class MainActivity : AppCompatActivity() {
     fun goMainFragment(){
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, mainFragment, MainFragment().javaClass.name)
+            .replace(R.id.fragmentContainer, mainFragment, mainFragment.javaClass.name)
             .commit()
     }
 
     fun goTakePhoto(){
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainer.id, takePhotoWithCameraXFragment, TakePhotoWithCameraXFragment().javaClass.name)
+            .replace(binding.fragmentContainer.id, takePhotoWithCameraXFragment, takePhotoWithCameraXFragment.javaClass.name)
             .addToBackStack(takePhotoWithCameraXFragment.javaClass.name)
             .commit()
     }
@@ -78,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     fun goOpenGallery(){
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainer.id, galleryFragment, GalleryFragment().javaClass.name)
+            .replace(binding.fragmentContainer.id, galleryFragment, galleryFragment.javaClass.name)
             .addToBackStack(galleryFragment.javaClass.name)
             .commit()
     }
@@ -123,6 +144,29 @@ class MainActivity : AppCompatActivity() {
 
     fun addProduct(product: Product){
         mainFragment.addProduct(product)
+    }
+
+    fun updateProduct(product: Product){
+        mainFragment.updateProduct(product)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(requestCode == locationRequestCode || grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            startForegroundService()
+        }
+    }
+
+    private fun startForegroundService(){
+        println("OK, starting foreground service")
+        Intent(this, LocationService::class.java).also { intent ->
+            startForegroundService(intent)
+        }
     }
 
 }
