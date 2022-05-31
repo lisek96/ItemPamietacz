@@ -11,6 +11,7 @@ import com.google.android.gms.common.internal.Constants
 import com.google.android.gms.location.*
 import rafalwojcik.prm.R
 import rafalwojcik.prm.activity.MainActivity
+import rafalwojcik.prm.broadcastreceiver.GeofenceReceiver
 import rafalwojcik.prm.dao.ProductDao
 import rafalwojcik.prm.database.DatabaseGiver
 import java.net.URI.create
@@ -43,26 +44,32 @@ class LocationService : Service() {
         thread {
             val productDao = DatabaseGiver.getDb(this).productDao()
             val products = productDao.getAll()
-
+            val geofences = mutableListOf<Geofence>()
             products.forEach { product ->
-                val geofencs = mutableListOf(
-                    Geofence.Builder().setCircularRegion(
+                    var geofence = Geofence.Builder().setCircularRegion(
                         product.latitude, product.longitude, 100f
                     )
-                        .setRequestId("TEST")
+                        .setRequestId(product.productName)
                         .setExpirationDuration(3600)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                         .build()
-                )
+                geofences.add(geofence)
+            }
 
-                GeofencingRequest.Builder().apply {
-                    setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                    addGeofences(geofencs)
-                }.build()
+            val geofencesRequest =GeofencingRequest.Builder().apply {
+                setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                addGeofences(geofences)
+            }.build()
+
+            val intent = Intent(this, GeofenceReceiver::class.java)
+            val geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            LocationServices.getGeofencingClient(this)
+                .addGeofences(geofencesRequest, geofencePendingIntent).run {
+                addOnSuccessListener { println("success geofences") }
+                addOnFailureListener { println("failure geofences") }
             }
         }
-
-
 
         thread {
             var locClient = LocationServices.getFusedLocationProviderClient(this)
@@ -92,6 +99,7 @@ class LocationService : Service() {
             "General",
             importance
         )
+
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(mChannel)
